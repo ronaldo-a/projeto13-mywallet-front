@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Login() {
+export default function Login () {
 
     let navigate = useNavigate()
     const [email, setEmail] = useState("");
@@ -15,10 +15,10 @@ export default function Login() {
 
         try {
             await axios.post("localhost:5000/", user);
-            
+            navigate("/home", {state: user});
         } catch (error) {
             console.log(error);
-            navigate("/home", {state: user});
+            alert(error.message);
         }
     }
 

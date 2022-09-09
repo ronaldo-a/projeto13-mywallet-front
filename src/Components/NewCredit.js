@@ -1,13 +1,36 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import dayjs from "dayjs";
 
 export default function NewCredit() {
+
+    let navigate = useNavigate();
+    const [value, setValue] = useState("");
+    const [description, setDescription] = useState("");
+
+    async function addCredit (e) {
+        e.preventDefaul();
+
+        const date = dayjs().format("DD/MM");
+        const type = "credit"
+
+        try {
+            await axios.post("localhost:5000/addTransaction", {date, description, value, type});
+            navigate("/home");
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     return (
         <Body>
             <h1>Nova Entrada</h1>
-            <form>
-                <input type="number" placeholder="Valor"></input>
-                <input type="text" placeholder="Descrição"></input>
-                <button>Salvar entrada</button>
+            <form onSubmit={addCredit}>
+                <input type="number" value={value} required placeholder="Valor" onChange={e => setValue(e.target.value)}></input>
+                <input type="text" value={description} required placeholder="Descrição" onChange={e => setDescription(e.target.value)}></input>
+                <button type="submit">Salvar entrada</button>
             </form>
         </Body>
     )

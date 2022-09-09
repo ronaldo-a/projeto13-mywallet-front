@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
+import Transactions from "./Transactions";
 
 export default function Home() {
     const location = useLocation();
@@ -7,12 +8,10 @@ export default function Home() {
     return (
         <Body>
             <Top>
-                <h1>Olá, {location.state.password}</h1>
+                <h1>Olá, USER</h1>
                 <ion-icon name="exit-outline"></ion-icon>
             </Top>
-            <Historic>
-                <p>Não há registros de entrada ou saída</p>
-            </Historic>
+            <Transactions />
             <Footer>
                 <Link to="/newcredit">
                     <AddTransaction>
@@ -58,26 +57,6 @@ const Top = styled.div`
     ion-icon {
         font-size: 30px;
         color: #FFFFFF;
-    }
-`
-const Historic = styled.div`
-    width: 326px;
-    height: 446px;
-    background-color: #FFFFFF;
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; 
-    margin: 0 auto 13px auto;
-    border-radius: 5px;
-
-    p {
-        font-family: 'Raleway', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 23px;
-        text-align: center;
-        color: #868686;
     }
 `
 const Footer = styled.div`
