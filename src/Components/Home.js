@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Transactions from "./Transactions";
+import axios from "axios";
 
 export default function Home() {   
 
@@ -8,16 +9,29 @@ export default function Home() {
     const location = useLocation();
     const token = location.state;
 
+    async function logOut (token) {
+        const config = {headers: {"Authorization": `Bearer ${token}`}};
+
+        try {
+            await axios.delete("http://localhost:5000/logout", config);
+            alert("Usuário deslogado com sucesso!");
+            return navigate("/");
+        } catch (error) {
+            alert(error.response.data);
+        }
+    } 
+
     if (!token) {
         alert("Acesso não permitido!");
        return navigate("/");
     }
 
+    //UI
     return (
         <Body>
             <Top>
                 <h1>Olá, USER</h1>
-                <ion-icon name="exit-outline"></ion-icon>
+                <ion-icon name="exit-outline" onClick={logOut} ></ion-icon>
             </Top>
             <Transactions token={token}/>
             <Footer>
