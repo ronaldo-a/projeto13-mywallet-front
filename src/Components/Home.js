@@ -1,19 +1,25 @@
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Transactions from "./Transactions";
 
-export default function Home({historic}) {
-    
+export default function Home() {   
 
+    let navigate = useNavigate();
     const location = useLocation();
+    const token = location.state;
+
+    if (!token) {
+        alert("Acesso não permitido!");
+       return navigate("/");
+    }
 
     return (
         <Body>
             <Top>
-                <h1>Olá, {location.state}</h1>
+                <h1>Olá, USER</h1>
                 <ion-icon name="exit-outline"></ion-icon>
             </Top>
-            <Transactions />
+            <Transactions token={token}/>
             <Footer>
                 <Link to="/newcredit">
                     <AddTransaction>

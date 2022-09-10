@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-export default function Transactions () {
+export default function Transactions ({token}) {
 
     let saldo;
     let balance;
@@ -12,7 +12,9 @@ export default function Transactions () {
 
         async function getTransactions () {
             try {
-                const transactions = await axios.get("http://localhost:5000/transactions");
+                const config = { headers: { "Authorization": `Bearer ${token}`}};
+                const transactions = await axios.get("http://localhost:5000/transactions", config);
+
                 setHistoric(transactions.data);
             } catch (error) {
                 alert(error.response.data);
