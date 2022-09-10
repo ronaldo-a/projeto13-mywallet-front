@@ -11,16 +11,16 @@ export default function NewCredit() {
     const [description, setDescription] = useState("");
 
     async function addCredit (e) {
-        e.preventDefaul();
+        e.preventDefault();
 
         const date = dayjs().format("DD/MM");
-        const type = "credit"
+        const type = "credit";
 
         try {
-            await axios.post("localhost:5000/addTransaction", {date, description, value, type});
+            await axios.post("http://localhost:5000/transactions", {date, description, value, type});
             navigate("/home");
         } catch (error) {
-            alert(error.message);
+            alert(error.response.data);
         }
     }
 

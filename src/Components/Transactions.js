@@ -1,43 +1,53 @@
 import axios from "axios";
-import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 export default function Transactions () {
 
-    //const [historic, setHistoric] = useState([]);
-    const historic = [{date: dayjs().format("DD/MM"), description: "casa", value: 100, type: "debit"}, 
-    {date: "12/04", description: "Rendimentos", value: 300, type: "credit"}];
-
-    const values = historic.map((transaction) => {
-        if (transaction.type === "debit") {
-            return (transaction.value * -1)
-        } else {
-            return transaction.value
-        }
-    })
-
-    let saldo = values.reduce((total, current) => total + current);
+    let saldo;
     let balance;
-    if (saldo < 1) {
-        saldo = saldo * -1;
-        balance = "negative";
-    } else {
-        balance = "positive";
+    const [historic, setHistoric] = useState([]);
+
+    useEffect(() => {
+
+        async function getTransactions () {
+            try {
+                const transactions = await axios.get("http://localhost:5000/transactions");
+                setHistoric(transactions.data);
+            } catch (error) {
+                alert(error.response.data);
+            }
+        }
+
+        getTransactions();   
+    }, [])
+
+    if (historic.length !== 0) {
+        const values = historic.map((transaction) => {
+            if (transaction.type === "debit") {
+                return (Number(transaction.value) * -1);
+            } else {
+                return Number(transaction.value);
+            }
+        })
+    
+    
+        saldo = values.reduce((total, current) => total + current);    
+        if (saldo < 1) {
+            saldo = saldo * -1;
+            balance = "negative";
+        } else {
+            balance = "positive";
+        }
     }
 
-    /*useEffect(() => {
 
-            axios.get("localhost:5000/historic")
-            .then((response) => setHistoric(response.data))
-            .catch((response) => console.log(response.message));
-    }, [])*/
-
+    //UI
     if (historic.length === 0) {
         return (
-            <Historic>
+            <HistoricEmpty>
                 <p>Não há registros de entrada ou saída</p>
-            </Historic>
+            </HistoricEmpty>
         )
     } else {
         return (
@@ -61,6 +71,7 @@ export default function Transactions () {
     }
 }
 
+
 function Transaction ({date, description, value, type}) {
     return (
         <TransactionContainer type={type}>
@@ -72,6 +83,28 @@ function Transaction ({date, description, value, type}) {
         </TransactionContainer>
     )
 }
+
+const HistoricEmpty = styled.div`
+    width: 326px;
+    height: 446px;
+    box-sizing: border-box;
+    padding: 23px 12px 10px 12px;
+    background-color: #FFFFFF;
+    display: flex; 
+    justify-content: flex-end;
+    
+    margin: 0 auto 13px auto;
+    border-radius: 5px;
+
+    p {
+        font-family: 'Raleway', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 23px;
+        text-align: center;
+        color: #868686;
+    }
+`
 
 const Historic = styled.div`
     width: 326px;
@@ -85,15 +118,6 @@ const Historic = styled.div`
     
     margin: 0 auto 13px auto;
     border-radius: 5px;
-
-    p {
-        font-family: 'Raleway', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 23px;
-        text-align: center;
-        color: #868686;
-    }
 `
 const Footer = styled.div`
     width: 100%;

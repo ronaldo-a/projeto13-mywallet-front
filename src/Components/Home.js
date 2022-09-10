@@ -2,13 +2,15 @@ import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import Transactions from "./Transactions";
 
-export default function Home() {
+export default function Home({historic}) {
+    
+
     const location = useLocation();
 
     return (
         <Body>
             <Top>
-                <h1>Olá, USER</h1>
+                <h1>Olá, {location.state}</h1>
                 <ion-icon name="exit-outline"></ion-icon>
             </Top>
             <Transactions />

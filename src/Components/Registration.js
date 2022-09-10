@@ -24,11 +24,11 @@ export default function Registration() {
         const user = {name, email, password};
         
         try {
-            await axios.post("localhost:5000/users", user)
+            await axios.post("http://localhost:5000/signup", user);
             alert("Usuário criado com sucesso! Favor fazer login.");
             navigate("/");
         } catch (error) {
-            alert(error.message);
+            alert(error.response.data);
         }
     }
 

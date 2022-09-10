@@ -14,11 +14,10 @@ export default function Login () {
         const user = {email,  password}
 
         try {
-            await axios.post("localhost:5000/", user);
-            navigate("/home", {state: user});
+            await axios.post("http://localhost:5000/signin", user);
+            navigate("/home", {state: user.email});
         } catch (error) {
-            console.log(error);
-            alert(error.message);
+            alert(error.response.data);
         }
     }
 
