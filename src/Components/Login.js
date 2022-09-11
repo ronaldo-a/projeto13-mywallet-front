@@ -15,9 +15,7 @@ export default function Login () {
 
         try {
             const loginIn = await axios.post("http://localhost:5000/signin", user);
-            console.log(loginIn.data)
-            const {token} = loginIn.data;
-            const {userName} = loginIn.data;
+            const {token, userName} = loginIn.data;
             if (token) {
                 return navigate("/home", {state: {token, userName}});
             }
