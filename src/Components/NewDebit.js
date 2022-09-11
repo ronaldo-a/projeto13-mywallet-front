@@ -12,6 +12,11 @@ export default function NewDebit() {
     const [description, setDescription] = useState("");
     const {token, userName} = location.state;
 
+    if (!token) {
+        alert("Acesso não permitido!");
+        return navigate("/");
+    }
+
     async function addDebit (e) {
         e.preventDefault();
 

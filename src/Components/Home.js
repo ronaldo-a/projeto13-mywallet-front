@@ -9,6 +9,11 @@ export default function Home() {
     const location = useLocation();
     const {token, userName} = location.state;
 
+    if (!token) {
+        alert("Acesso não permitido!");
+       return navigate("/");
+    }
+
     async function logOut () {
         const config = {headers: {"Authorization": `Bearer ${token}`}};
 
@@ -27,11 +32,6 @@ export default function Home() {
 
     function addDebit() {
         navigate("/newdebit", {state: {token, userName}});
-    }
-
-    if (!token) {
-        alert("Acesso não permitido!");
-       return navigate("/");
     }
 
     //UI
