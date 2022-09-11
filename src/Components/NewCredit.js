@@ -10,17 +10,18 @@ export default function NewCredit() {
     let location = useLocation();
     const [value, setValue] = useState("");
     const [description, setDescription] = useState("");
+    const {token, userName} = location.state
 
     async function addCredit (e) {
         e.preventDefault();
 
         const date = dayjs().format("DD/MM");
         const type = "credit";
-        const config = {headers: {"Authorization": `Bearer ${location.state}`}};
+        const config = {headers: {"Authorization": `Bearer ${token}`}};
 
         try {
             await axios.post("http://localhost:5000/transactions", {date, description, value, type}, config);
-            navigate("/home", {state: location.state});
+            navigate("/home", {state: {token, userName}});
         } catch (error) {
             alert(error.response.data);
         }

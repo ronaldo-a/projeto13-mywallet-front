@@ -7,7 +7,7 @@ export default function Home() {
 
     let navigate = useNavigate();
     const location = useLocation();
-    const token = location.state;
+    const {token, userName} = location.state;
 
     async function logOut () {
         const config = {headers: {"Authorization": `Bearer ${token}`}};
@@ -22,11 +22,11 @@ export default function Home() {
     }
     
     function addCredit() {
-        navigate("/newcredit", {state: token});
+        navigate("/newcredit", {state: {token, userName}});
     }
 
     function addDebit() {
-        navigate("/newdebit", {state: token});
+        navigate("/newdebit", {state: {token, userName}});
     }
 
     if (!token) {
@@ -38,7 +38,7 @@ export default function Home() {
     return (
         <Body>
             <Top>
-                <h1>Olá, USER</h1>
+                <h1>Olá, {userName}</h1>
                 <ion-icon name="exit-outline" onClick={logOut} ></ion-icon>
             </Top>
             <Transactions token={token}/>
