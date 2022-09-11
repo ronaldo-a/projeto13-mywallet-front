@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
 export default function NewCredit() {
 
     let navigate = useNavigate();
+    let location = useLocation();
     const [value, setValue] = useState("");
     const [description, setDescription] = useState("");
 
@@ -15,10 +16,11 @@ export default function NewCredit() {
 
         const date = dayjs().format("DD/MM");
         const type = "credit";
+        const config = {headers: {"Authorization": `Bearer ${location.state}`}};
 
         try {
-            await axios.post("http://localhost:5000/transactions", {date, description, value, type});
-            navigate("/home");
+            await axios.post("http://localhost:5000/transactions", {date, description, value, type}, config);
+            navigate("/home", {state: location.state});
         } catch (error) {
             alert(error.response.data);
         }

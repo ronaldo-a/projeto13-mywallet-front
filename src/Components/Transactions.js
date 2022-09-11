@@ -107,7 +107,6 @@ const HistoricEmpty = styled.div`
         color: #868686;
     }
 `
-
 const Historic = styled.div`
     width: 326px;
     height: 446px;

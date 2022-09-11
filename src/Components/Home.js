@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Transactions from "./Transactions";
 import axios from "axios";
 
@@ -9,7 +9,7 @@ export default function Home() {
     const location = useLocation();
     const token = location.state;
 
-    async function logOut (token) {
+    async function logOut () {
         const config = {headers: {"Authorization": `Bearer ${token}`}};
 
         try {
@@ -19,7 +19,15 @@ export default function Home() {
         } catch (error) {
             alert(error.response.data);
         }
-    } 
+    }
+    
+    function addCredit() {
+        navigate("/newcredit", {state: token});
+    }
+
+    function addDebit() {
+        navigate("/newdebit", {state: token});
+    }
 
     if (!token) {
         alert("Acesso não permitido!");
@@ -35,18 +43,14 @@ export default function Home() {
             </Top>
             <Transactions token={token}/>
             <Footer>
-                <Link to="/newcredit">
-                    <AddTransaction>
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                        <p>Nova Entrada</p>
-                    </AddTransaction>
-                </Link>
-                <Link to="/newdebit">
-                    <AddTransaction>
-                        <ion-icon name="remove-circle-outline"></ion-icon>
-                        <p>Nova Saída</p>
-                    </AddTransaction>
-                </Link>
+                <AddTransaction onClick={addCredit}>
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    <p>Nova Entrada</p>
+                </AddTransaction>
+                <AddTransaction onClick={addDebit}>
+                    <ion-icon name="remove-circle-outline"></ion-icon>
+                    <p>Nova Saída</p>
+                </AddTransaction>
             </Footer>
         </Body>
     )
