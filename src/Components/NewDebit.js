@@ -26,7 +26,6 @@ export default function NewDebit() {
 
         let value = parseFloat(amount).toFixed(2);
         value = parseFloat(value);
-        console.log(typeof value);
 
         try {
             await axios.post("http://localhost:5000/transactions", {date, description, value, type}, config);
