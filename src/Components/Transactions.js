@@ -93,7 +93,7 @@ const HistoricEmpty = styled.div`
     padding: 23px 12px 10px 12px;
     background-color: #FFFFFF;
     display: flex; 
-    justify-content: flex-end;
+    align-items: center;
     
     margin: 0 auto 13px auto;
     border-radius: 5px;

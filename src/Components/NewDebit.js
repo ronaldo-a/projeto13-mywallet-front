@@ -8,7 +8,7 @@ export default function NewDebit() {
 
     let navigate = useNavigate();
     let location = useLocation();
-    const [value, setValue] = useState("");
+    const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
     const {token, userName} = location.state;
 
@@ -24,6 +24,9 @@ export default function NewDebit() {
         const type = "debit";
         const config = {headers: {"Authorization": `Bearer ${token}`}};
 
+        let value = parseFloat(amount).toFixed(2);
+        value = parseFloat(value);
+
         try {
             await axios.post("http://localhost:5000/transactions", {date, description, value, type}, config);
             navigate("/home", {state: {token, userName}});
@@ -36,7 +39,7 @@ export default function NewDebit() {
         <Body>
             <h1>Nova saída</h1>
             <form onSubmit={addDebit}>
-                <input type="number" value={value} min="0.01" step="0.01" required placeholder="Valor" onChange={e => setValue(e.target.value)}></input>
+                <input type="number" value={amount} required placeholder="Valor" onChange={e => setAmount(e.target.value)}></input>
                 <input type="text" value={description} required placeholder="Descrição" onChange={e => setDescription(e.target.value)}></input>
                 <button type="submit">Salvar saída</button>
             </form>
