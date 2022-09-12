@@ -36,7 +36,7 @@ export default function NewCredit() {
         <Body>
             <h1>Nova Entrada</h1>
             <form onSubmit={addCredit}>
-                <input type="number" value={value} required placeholder="Valor" onChange={e => setValue(e.target.value)}></input>
+                <input type="number" value={value} min="0.01" step="0.01" required placeholder="Valor" onChange={e => setValue(e.target.value)}></input>
                 <input type="text" value={description} required placeholder="Descrição" onChange={e => setDescription(e.target.value)}></input>
                 <button type="submit">Salvar entrada</button>
             </form>
