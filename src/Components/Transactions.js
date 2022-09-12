@@ -13,9 +13,9 @@ export default function Transactions ({token}) {
         async function getTransactions () {
             try {
                 const config = { headers: { "Authorization": `Bearer ${token}`}};
-                const transactions = await axios.get("http://localhost:5000/transactions", config);
+                let transactions = await axios.get("http://localhost:5000/transactions", config);
 
-                setHistoric(transactions.data);
+                setHistoric(transactions.data.reverse());
             } catch (error) {
                 alert(error.response.data);
             }
@@ -55,14 +55,14 @@ export default function Transactions ({token}) {
         return (
             <>
                 <Historic>
-                    <div>
+                    <Scroll>
                         {historic.map((historic, index) => <Transaction 
                         date={historic.date} 
                         description={historic.description} 
                         value={historic.value} 
                         type={historic.type}
                         key={index}/>)}
-                    </div>
+                    </Scroll>
                     <Footer balance={balance}>
                         <h4>Saldo</h4>
                         <h3>{saldo}</h3>
@@ -119,6 +119,9 @@ const Historic = styled.div`
     
     margin: 0 auto 13px auto;
     border-radius: 5px;
+`
+const Scroll = styled.div`
+    overflow-y: scroll;
 `
 const Footer = styled.div`
     width: 100%;
