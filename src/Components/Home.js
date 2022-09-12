@@ -7,6 +7,12 @@ export default function Home() {
 
     let navigate = useNavigate();
     const location = useLocation();
+
+    if (location.state === null) {
+        alert("Acesso não permitido!");
+        return navigate("/");
+    }
+
     const {token, userName} = location.state;
 
     if (!token) {
