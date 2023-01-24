@@ -1,4 +1,4 @@
-#MyWallet
+# MyWallet
 Personal budget organizer app. Save your daylies incomings and withdraws to keep track of your financial situation.
 
 ## About
