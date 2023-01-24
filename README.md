@@ -19,6 +19,7 @@ Personal budget organizer app. Save your daylies incomings and withdraws to keep
  React, Axios, Styled Components and Vercel. 
 
 <h3>How to run</h3>
+  
   1. Run the back-end of this app found here: https://github.com/ronaldo-a/projeto13-mywallet-back
 
   2. Clone this repository
