@@ -24,7 +24,7 @@ export default function Registration() {
         const user = {name, email, password};
         
         try {
-            await axios.post("http://localhost:5000/signup", user);
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`, user);
             alert("Usuário criado com sucesso! Favor fazer login.");
             navigate("/");
         } catch (error) {

@@ -13,7 +13,7 @@ export default function Transactions ({token}) {
         async function getTransactions () {
             try {
                 const config = { headers: { "Authorization": `Bearer ${token}`}};
-                let transactions = await axios.get("http://localhost:5000/transactions", config);
+                let transactions = await axios.get(`${process.env.REACT_APP_BASE_URL}/transactions`, config);
 
                 setHistoric(transactions.data.reverse());
             } catch (error) {
@@ -34,13 +34,15 @@ export default function Transactions ({token}) {
         })
     
     
-        saldo = values.reduce((total, current) => total + current);    
+        saldo = values.reduce((total, current) => total + current);
+        saldo = parseFloat(saldo.toFixed(2));    
         if (saldo < 1) {
             saldo = saldo * -1;
             balance = "negative";
         } else {
             balance = "positive";
         }
+
     }
 
 

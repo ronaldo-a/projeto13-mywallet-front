@@ -24,7 +24,7 @@ export default function Home() {
         const config = {headers: {"Authorization": `Bearer ${token}`}};
 
         try {
-            await axios.delete("http://localhost:5000/logout", config);
+            await axios.delete(`${process.env.REACT_APP_BASE_URL}/logout`, config);
             alert("Usuário deslogado com sucesso!");
             return navigate("/");
         } catch (error) {

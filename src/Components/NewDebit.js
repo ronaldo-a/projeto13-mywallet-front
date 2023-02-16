@@ -28,7 +28,7 @@ export default function NewDebit() {
         value = parseFloat(value);
 
         try {
-            await axios.post("http://localhost:5000/transactions", {date, description, value, type}, config);
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/transactions`, {date, description, value, type}, config);
             navigate("/home", {state: {token, userName}});
         } catch (error) {
             alert(error.response.data);
