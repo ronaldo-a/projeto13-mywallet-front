@@ -8,9 +8,11 @@ export default function Login () {
     let navigate = useNavigate()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); 
+    const [loading, setLoading] = useState(false);
 
     async function login (e) {
         e.preventDefault()
+        setLoading(true)
         const user = {email,  password}
 
         try {
@@ -23,19 +25,30 @@ export default function Login () {
             alert(loginIn.response);
             
         } catch (error) {
+            setLoading(false)
             alert(error.response.data);
         }
     }
 
     return (
         <Body>
-            <h1>MyWallet</h1>
-            <form onSubmit={login}>
-                <input type="email" value={email} placeholder="E-mail" required onChange={e => setEmail(e.target.value)}></input>
-                <input type="password" value={password} placeholder="Senha" required onChange={e => setPassword(e.target.value)}></input>
-                <button type="submit">Entrar</button>
-            </form>
-            <Link to="/registration"><p>Primeira vez? Cadastre-se</p></Link>
+            {
+                loading === false ?
+                <>
+                    <h1>MyWallet</h1>
+                    <form onSubmit={login}>
+                        <input type="email" value={email} placeholder="E-mail" required onChange={e => setEmail(e.target.value)}></input>
+                        <input type="password" value={password} placeholder="Senha" required onChange={e => setPassword(e.target.value)}></input>
+                        <button type="submit">Entrar</button>
+                    </form>
+                    <Link to="/registration"><p>Primeira vez? Cadastre-se</p></Link>
+                </>
+                :
+                <>
+                    <h1>MyWallet</h1>
+                    <p>Carregando...</p>
+                </>
+            }
         </Body>
     )
 }

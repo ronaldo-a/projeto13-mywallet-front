@@ -11,13 +11,16 @@ export default function Registration() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
+    const [loading, setLoading] = useState(false);
 
     async function registrate (e) {
 
         e.preventDefault();
+        setLoading(true);
 
         if (password !== password2) {
             alert("Senhas não são iguais");
+            setLoading(false);
             return;
         }
 
@@ -28,6 +31,7 @@ export default function Registration() {
             alert("Usuário criado com sucesso! Favor fazer login.");
             navigate("/");
         } catch (error) {
+            setLoading(false);
             alert(error.response.data);
         }
     }
@@ -35,14 +39,21 @@ export default function Registration() {
     return (
         <Body>
             <h1>MyWallet</h1>
-            <form onSubmit={registrate}>
-                <input type="text" value={name} required placeholder="Nome" onChange={e => setName(e.target.value)}></input>
-                <input type="email" value={email} required placeholder="Email" onChange={e => setEmail(e.target.value)}></input>
-                <input type="password" value={password} required placeholder="Password" onChange={e => setPassword(e.target.value)}></input>
-                <input type="password" value={password2} required placeholder="Password" onChange={e => setPassword2(e.target.value)}></input>
-                <button type="submit">Cadastrar</button>
-            </form>
-            <Link to="/"><p>Já tem uma conta? Entre agora</p></Link>
+            {
+                loading === false ?
+                <>
+                    <form onSubmit={registrate}>
+                        <input type="text" value={name} required placeholder="Nome" onChange={e => setName(e.target.value)}></input>
+                        <input type="email" value={email} required placeholder="Email" onChange={e => setEmail(e.target.value)}></input>
+                        <input type="password" value={password} required placeholder="Password" onChange={e => setPassword(e.target.value)}></input>
+                        <input type="password" value={password2} required placeholder="Password" onChange={e => setPassword2(e.target.value)}></input>
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                    <Link to="/"><p>Já tem uma conta? Entre agora</p></Link>
+                </>
+                :
+                <p>Carregando...</p>
+            }
         </Body>
     )
 }

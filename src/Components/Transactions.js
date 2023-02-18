@@ -7,6 +7,7 @@ export default function Transactions ({token}) {
     let saldo;
     let balance;
     const [historic, setHistoric] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
@@ -16,6 +17,7 @@ export default function Transactions ({token}) {
                 let transactions = await axios.get(`${process.env.REACT_APP_BASE_URL}/transactions`, config);
 
                 setHistoric(transactions.data.reverse());
+                setLoading(false);
             } catch (error) {
                 alert(error.response.data);
             }
@@ -47,14 +49,17 @@ export default function Transactions ({token}) {
 
 
     //UI
-    if (historic.length === 0) {
-        return (
-            <HistoricEmpty>
-                <p>Não há registros de entrada ou saída</p>
-            </HistoricEmpty>
-        )
-    } else {
-        return (
+    return(
+        <>
+        {
+            loading === true ?
+            <Historic>
+                <h4>Carregando...</h4>
+            </Historic>
+            :
+            historic.length === 0 ? 
+            <HistoricEmpty><p>Não há registros de entrada ou saída</p></HistoricEmpty>
+            :
             <>
                 <Historic>
                     <Scroll>
@@ -71,8 +76,9 @@ export default function Transactions ({token}) {
                     </Footer>
                 </Historic>
             </>
-        )
-    }
+        }
+        </>
+    )
 }
 
 
