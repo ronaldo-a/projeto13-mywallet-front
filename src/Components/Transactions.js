@@ -2,12 +2,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-export default function Transactions ({token}) {
+export default function Transactions ({token, logOut}) {
 
     let saldo;
     let balance;
     const [historic, setHistoric] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [rerender, setRerender] = useState(true);
 
     useEffect(() => {
 
@@ -15,16 +16,17 @@ export default function Transactions ({token}) {
             try {
                 const config = { headers: { "Authorization": `Bearer ${token}`}};
                 let transactions = await axios.get(`${process.env.REACT_APP_BASE_URL}/transactions`, config);
-
                 setHistoric(transactions.data.reverse());
                 setLoading(false);
             } catch (error) {
-                alert(error.response.data);
+                alert("Algo de errado aconteceu. Favor tentar mais tarde.")
+                console.log(error);
+                logOut();
             }
         }
 
         getTransactions();   
-    }, [])
+    }, [rerender])
 
     if (historic.length !== 0) {
         const values = historic.map((transaction) => {
@@ -47,7 +49,6 @@ export default function Transactions ({token}) {
 
     }
 
-
     //UI
     return(
         <>
@@ -64,10 +65,14 @@ export default function Transactions ({token}) {
                 <Historic>
                     <Scroll>
                         {historic.map((historic, index) => <Transaction 
+                        id={historic._id}
                         date={historic.date} 
                         description={historic.description} 
                         value={historic.value} 
                         type={historic.type}
+                        token={token}
+                        setRerender={setRerender}
+                        rerender={rerender}
                         key={index}/>)}
                     </Scroll>
                     <Footer balance={balance}>
@@ -82,14 +87,24 @@ export default function Transactions ({token}) {
 }
 
 
-function Transaction ({date, description, value, type}) {
+function Transaction ({id, date, description, value, type, token, setRerender, rerender}) {
+
+    async function deleteTransaction() {
+        const config = { headers: { "Authorization": `Bearer ${token}`}};
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/transactions/${id}`, config);
+        setRerender(!rerender)
+    }
+
     return (
         <TransactionContainer type={type}>
             <TransactionStart>
                 <p>{date}</p>
                 <h5>{description}</h5>
             </TransactionStart>
-            <h6>{value}</h6>
+            <TransactionEnd>
+                <h6>{value}</h6>
+                <ion-icon name="trash-outline" onClick={deleteTransaction}></ion-icon>
+            </TransactionEnd>
         </TransactionContainer>
     )
 }
@@ -186,7 +201,17 @@ const TransactionContainer = styled.div`
         color: ${props => {if (props.type === "credit") {return "#03AC00"} else {return "#C70000"}}};
         justify-self: right;
     }
+
+    ion-icon {
+        width: 20px;
+        height: 20px;
+        color: black;
+        margin-left: 10px;
+    }
 `
 const TransactionStart = styled.div`
+    display: flex;
+`
+const TransactionEnd = styled.div`
     display: flex;
 `

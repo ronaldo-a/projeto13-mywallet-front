@@ -47,7 +47,7 @@ export default function Home() {
                 <h1>Olá, {userName}</h1>
                 <ion-icon name="exit-outline" onClick={logOut} ></ion-icon>
             </Top>
-            <Transactions token={token}/>
+            <Transactions token={token} logOut={logOut}/>
             <Footer>
                 <AddTransaction onClick={addCredit}>
                     <ion-icon name="add-circle-outline"></ion-icon>
